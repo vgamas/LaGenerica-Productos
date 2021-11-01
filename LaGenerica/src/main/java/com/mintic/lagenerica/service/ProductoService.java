@@ -1,9 +1,18 @@
 package com.mintic.lagenerica.service;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.Optional;
 
 import com.mintic.lagenerica.model.Producto;
 
-public interface ProductoService extends JpaRepository<Producto, Long> {
-
+public interface ProductoService {
+	
+	public Producto crearProducto(Producto producto);
+	
+	public Iterable<Producto> listarProductos();
+	
+	public void borrarProductoPorId(Long id) ;
+	
+	public void borrarTodosProductos();
+	
+	public Optional<Producto> buscarProductoPorId(Long id);
 }
