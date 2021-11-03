@@ -8,31 +8,35 @@ import java.util.stream.StreamSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mintic.lagenerica.model.Producto;
-import com.mintic.lagenerica.service.ProductoService;
+import com.mintic.lagenerica.repository.ProductoRepository;
 
-@RestController("/productos")
+@CrossOrigin(origins = "http://localhost:9090") // Seguridad
+@RestController
+@RequestMapping("/productos")
 public class ProductoController {
 
 	@Autowired
-	private ProductoService productoService;
+	private ProductoRepository productoRepository;
 	
 	@PostMapping("/guardar")
 	public ResponseEntity<?> crearProducto(@RequestBody Producto producto){
-		return ResponseEntity.status(HttpStatus.CREATED).body(productoService.crearProducto(producto));
+		return ResponseEntity.status(HttpStatus.CREATED).body(productoRepository.save(producto));
 	}
 	
 	@GetMapping("/listar")
 	public List<Producto> listarProductos() {
-		List<Producto> listaProductos = StreamSupport.stream(productoService.listarProductos().spliterator(), false).collect(Collectors.toList());
+		List<Producto> listaProductos = StreamSupport.stream(productoRepository.findAll().spliterator(), false).collect(Collectors.toList());
 		
 		return listaProductos;
 	}
@@ -40,7 +44,7 @@ public class ProductoController {
 	@GetMapping("/buscar/{id}")
 	public ResponseEntity<?> bucarProducto(@PathVariable(value = "id") Long id) {
 
-		Optional<Producto> oProducto = productoService.buscarProductoPorId(id) ;
+		Optional<Producto> oProducto = productoRepository.findById(id) ;
 		
 		if (oProducto.isEmpty())
 			return ResponseEntity.notFound().build();
@@ -51,12 +55,12 @@ public class ProductoController {
 	@DeleteMapping("/eliminar/{id}")
 	public ResponseEntity<?> borrarProductoporId(@PathVariable(value = "id") Long id) {
 
-		Optional<Producto> oProducto = productoService.buscarProductoPorId(id) ;
+		Optional<Producto> oProducto = productoRepository.findById(id) ;
 		
 		if (oProducto.isEmpty())
 			return ResponseEntity.notFound().build();
 		
-		productoService.borrarProductoPorId(id);
+		productoRepository.deleteById(id);
 		
 		return ResponseEntity.ok(oProducto);
 	}
@@ -64,7 +68,7 @@ public class ProductoController {
 	@PutMapping("actualizar")
 	public ResponseEntity<?> actualizarProducto(@RequestBody Producto producto) {
 
-		Optional<Producto> productoAnt = productoService.buscarProductoPorId(producto.getCodigo_producto());
+		Optional<Producto> productoAnt = productoRepository.findById(producto.getCodigo_producto());
 		
 		if(productoAnt.isEmpty())
 			return ResponseEntity.notFound().build();
@@ -75,6 +79,6 @@ public class ProductoController {
 		productoAnt.get().setIvacompra(producto.getIvacompra());
 		productoAnt.get().setPrecio_venta(producto.getPrecio_venta());
 		
-		return ResponseEntity.status(HttpStatus.CREATED).body(productoService.crearProducto(productoAnt.get()));	
+		return ResponseEntity.status(HttpStatus.CREATED).body(productoRepository.save(productoAnt.get()));	
 	}
 }

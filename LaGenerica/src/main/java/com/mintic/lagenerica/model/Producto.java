@@ -1,10 +1,10 @@
 package com.mintic.lagenerica.model;
 
-import javax.persistence.Id;
+import org.springframework.data.annotation.Id;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document("db_productos")
+@Document(collection = "db_productos")
 public class Producto {
 
 	@Id
