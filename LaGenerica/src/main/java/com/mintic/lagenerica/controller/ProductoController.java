@@ -64,6 +64,17 @@ public class ProductoController {
 		
 		return ResponseEntity.ok(oProducto);
 	}
+	
+	@DeleteMapping("/eliminar")
+	public ResponseEntity<?> borrarTodos() {
+
+		Producto oProducto = new Producto();
+		
+		productoRepository.deleteAll();;
+		
+		return ResponseEntity.ok(oProducto);
+	}
+
 
 	@PutMapping("actualizar")
 	public ResponseEntity<?> actualizarProducto(@RequestBody Producto producto) {
