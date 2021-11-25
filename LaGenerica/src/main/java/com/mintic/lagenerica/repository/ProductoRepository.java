@@ -8,5 +8,5 @@ import com.mintic.lagenerica.model.Producto;
 
 public interface ProductoRepository extends MongoRepository<Producto, Long> {
 
-//	List<Producto> findByNombre_producto(String nombre);
+//	List<Producto> findByNombre_producto(String nombre_producto);
 }

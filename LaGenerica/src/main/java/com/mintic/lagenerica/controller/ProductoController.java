@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mintic.lagenerica.model.Producto;
 import com.mintic.lagenerica.repository.ProductoRepository;
 
-@CrossOrigin(origins = "http://localhost:9090") // Seguridad
+@CrossOrigin(origins = {"http://localhost:9090", "http://localhost:3000"}) // Seguridad
 @RestController
 @RequestMapping("/productos")
 public class ProductoController {
@@ -76,7 +76,7 @@ public class ProductoController {
 	}
 
 
-	@PutMapping("actualizar")
+	@PutMapping("/actualizar")
 	public ResponseEntity<?> actualizarProducto(@RequestBody Producto producto) {
 
 		Optional<Producto> productoAnt = productoRepository.findById(producto.getCodigo_producto());
