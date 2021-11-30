@@ -70,7 +70,7 @@ public class ProductoController {
 
 		Producto oProducto = new Producto();
 		
-		productoRepository.deleteAll();;
+		productoRepository.deleteAll();
 		
 		return ResponseEntity.ok(oProducto);
 	}
