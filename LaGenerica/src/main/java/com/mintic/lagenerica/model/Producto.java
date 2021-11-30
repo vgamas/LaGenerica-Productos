@@ -10,7 +10,6 @@ public class Producto {
 	@Id
 	private Long codigo_producto;
 	private String nombre_producto;
-	//@DBRef
 	private Long nitproveedor;
 	private Double precio_compra;
 	private Double ivacompra;
